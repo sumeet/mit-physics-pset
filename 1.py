@@ -20,7 +20,7 @@
 # bike reaches car       | t = 2 car stops
 
 
-from sympy import Symbol, init_printing, pprint, Piecewise, symbols, sympify, solve
+from sympy import Symbol, init_printing, pprint, Piecewise, symbols, sympify, solve, simplify, factor
 
 
 def p(*args):
@@ -29,12 +29,13 @@ def p(*args):
 
 init_printing()
 
-t, t1, c, v0 = symbols('t t1 c, v0')
+t, t1, c, v0 = symbols('t t1 c v0')
 
-ac = v0 - c * (t - t1)
+ac = -c * (t - t1)
+p(sympify('a_c(t)'))
 p(ac)
 
-vc = ac.integrate(t)
+vc = v0 - ac.integrate(t)
 xc = vc.integrate(t)
 
 print('problem 1 (a)')
@@ -44,4 +45,15 @@ p(sympify('x_c(t)'))
 p(xc)
 
 print('problem 1 (b)')
-p(solve(vc.subs(v0, 12).subs(t1, 1).subs(c, 6), t))
+inner = vc.subs(v0, 12).subs(t1, 1).subs(c, 6)
+print(solve(inner))
+exit()
+#t2 = solve(inner)
+#print(t2)
+#exit()
+#print(sympify((t2)))
+#print('t2', float(t2))
+
+x_t2 = xc.subs(v0, 12).subs(t1, 1).subs(c, 6).subs(t, t2)
+print('x_t2', float(x_t2))
+print(float(17.0 + x_t2 / t2))
